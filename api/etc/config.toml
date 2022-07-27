@@ -1,0 +1,13 @@
+[app]
+name = "blog"
+
+[app.http]
+host = "localhost"
+port = "8080"
+
+[mysql]
+host = "localhost"
+port = "3306"
+database = "vblog"
+username = "admin"
+password = "admin"
