@@ -13,7 +13,7 @@ type Impl struct {
 	db *sql.DB
 }
 
-func (i *Impl) init() error {
+func (i *Impl) Init() error {
 	i.db = conf.Conf().Mysql.GetDB()
 	return nil
 }
