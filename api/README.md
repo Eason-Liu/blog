@@ -3,7 +3,6 @@
 提供RESTfulAPI接口
 
 ## 工程配置对象管理
-直接os.GetEnv太简单, 复杂的工程, 支持多种方式的配置
 + 基于文件(json,ymal,toml), 基于toml的格式来作为程序的配置
     + json: json.Marshal 标准库
     + ymal: 第三方库

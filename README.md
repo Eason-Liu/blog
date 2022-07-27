@@ -9,10 +9,6 @@
     + 前端框架:vue3, vue-router
     + UI组件: arcoUI(头条2021-12开源的vue3UI组件库)
 
-## 设计
-
-省略了需求的收集
-
 ### 功能设计
 
 管理员:
@@ -30,11 +26,6 @@
 + 认证接口: basic auth(用户密码通过配置提供), 在接口上 通过中间件的方式实现接口认证
 
 
-### 原型
-
-vscode 查看原型的插件: Draw.io Integration
-
-
 ### 后端开发
 
 
@@ -44,9 +35,7 @@ vscode 查看原型的插件: Draw.io Integration
 + mysql: mysql  Ver 8.0.27 for Linux on x86_64 (MySQL Community Server - GPL)
     + 采用Docker搭建(docker安装教程直接百度)
     + 数据库连接工具(navicat, 尽量比较新的版本)
-+ vscode开发环境
-    + go开发环境, Go插件安装, 没安装写一个.go文件, 按照提示进行安装
-    + windows shell环境准备: 参考: [VS Code 终端设置为Git Bash](https://www.cnblogs.com/remixnameless/p/14826532.html?tdsourcetag=s_pcqq_aiomsg)
+
 
 #### 数据库设计
 
@@ -73,11 +62,11 @@ vscode 查看原型的插件: Draw.io Integration
 
 #### 接口设计
 
-RestFul接口就有2中资源(Resource): 文章, 标签
+RestFul接口就有2种资源(Resource): 文章, 标签
 
 + 文章管理:
     + 创建文章(Create)： 管理员
-        + URI:  http://localhost/vblog/api/v1/blogs
+        + URI:  http://localhost/blog/api/v1/blogs
         + Method: POST
         + Body: Blog创建对象
             + title_img: 文章的标题图片(oss的连接)
@@ -86,10 +75,10 @@ RestFul接口就有2中资源(Resource): 文章, 标签
             + content: 博客内容
             + author: 文章的作者
     + 删除文章(Delete): 管理员
-        + URI:  http://localhost/vblog/api/v1/blogs/:blog_id
+        + URI:  http://localhost/blog/api/v1/blogs/:blog_id
         + Method: DELETE
     + 更新文章(Update): 管理员
-        + URI:  http://localhost/vblog/api/v1/blogs/:blog_id
+        + URI:  http://localhost/blog/api/v1/blogs/:blog_id
         + Method: PUT(全量更新)/PATCH(部分更新)
         + Body: 修改的数据
             + title_img: 文章的标题图片(oss的连接)
@@ -98,7 +87,7 @@ RestFul接口就有2中资源(Resource): 文章, 标签
             + content: 博客内容
             + author: 文章的作者
     + 文章列表(List): 无认证接口 (浏览者/管理员)
-        + URI:  http://localhost/vblog/api/v1/blogs/
+        + URI:  http://localhost/blog/api/v1/blogs/
         + Method: GET
         + Params:
             + page_size: 分页的大小,默认20个
@@ -106,16 +95,16 @@ RestFul接口就有2中资源(Resource): 文章, 标签
             + status: 草稿(管理员才能查)/发布(都能查询)
             + keywords: 关键字搜索
     + 文章详情(Get): 无认证接口 (浏览者/管理员)
-        + URI:  http://localhost/vblog/api/v1/blogs/:blog_id
+        + URI:  http://localhost/blog/api/v1/blogs/:blog_id
         + Method: GET
     + 文章发布: 修改文章的状态为发布
-        + URI:  http://localhost/vblog/api/v1/blogs/:blog_id/status
+        + URI:  http://localhost/blog/api/v1/blogs/:blog_id/status
         + Method: POST
         + Body: 状态名称
 
 + 标签管理:
     + 添加标签(Create): 管理员
-        + URI:  http://localhost/vblog/api/v1/tags/
+        + URI:  http://localhost/blog/api/v1/tags/
         + Method: POST
         + Body: Tag创建对象
             + blog_id: 关联的博客
@@ -123,7 +112,7 @@ RestFul接口就有2中资源(Resource): 文章, 标签
             + value: 标签的value
             + color: 标签的颜色
     + 删除标签(Delete): 管理员
-        + URI:  http://localhost/vblog/api/v1/tags/:tag_id
+        + URI:  http://localhost/blog/api/v1/tags/:tag_id
         + Method: DELETE
 
 ## 工程架构
