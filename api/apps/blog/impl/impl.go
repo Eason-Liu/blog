@@ -1,6 +1,7 @@
 package impl
 
 import (
+	"blog/conf"
 	"database/sql"
 )
 
@@ -13,6 +14,6 @@ type Impl struct {
 }
 
 func (i *Impl) init() error {
-	i.db =
+	i.db = conf.Conf().Mysql.GetDB()
 	return nil
 }
