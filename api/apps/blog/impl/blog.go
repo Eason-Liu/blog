@@ -49,15 +49,26 @@ func (i *Impl) QueryBlog(ctx context.Context, req *blog.QueryBlogRequest) (*blog
 	return set, nil
 }
 
+func (i *Impl) DescribeBlog(ctx context.Context, req *blog.DescribeBlogRequest) (*blog.Blog, error) {
+	ins := blog.NewCreateBlog(blog.NewCreateBlogRequest())
+
+	query := i.DB().Where("id=?", req.Id)
+	if err := query.Find(ins).Error; err != nil {
+		return nil, err
+	}
+
+	if ins.Id == 0 {
+		return nil, exception.NewBadRequest("blog %d not found", req.Id)
+	}
+
+	return ins, nil
+}
+
 func (i *Impl) UpdateBlog(ctx context.Context, req *blog.UpdateBlogRequest) (*blog.Blog, error) {
 	return nil, errors.New("not implment")
 }
 
 func (i *Impl) DeleteBlog(ctx context.Context, req *blog.DeleteBlogRequest) (*blog.Blog, error) {
-	return nil, errors.New("not implment")
-}
-
-func (i *Impl) DescribeBlog(ctx context.Context, req *blog.DescribeBlogRequest) (*blog.Blog, error) {
 	return nil, errors.New("not implment")
 }
 

@@ -34,7 +34,16 @@ func TestQueryBlog(t *testing.T) {
 		t.Fatal(err)
 	}
 	t.Log(ins)
+}
 
+func TestDescribeBlog(t *testing.T) {
+	req := blog.NewDescribeBlogRequest(1)
+	ins, err := blogService.DescribeBlog(context.Background(), req)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Log(ins)
 }
 
 func init() {
