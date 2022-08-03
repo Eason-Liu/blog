@@ -86,7 +86,7 @@ func (i *Impl) UpdateBlog(ctx context.Context, req *blog.UpdateBlogRequest) (*bl
 	case blog.UPDATE_MODE_PUT:
 		ins.CreateBlogRequest = req.CreateBlogRequest
 	case blog.UPDATE_MODE_PATCH:
-		if err := mergo.MapWithOverwrite(ins.CreateBlogRequest, req.CreateBlogRequest); err != nil {
+		if err := mergo.MergeWithOverwrite(ins.CreateBlogRequest, req.CreateBlogRequest); err != nil {
 			return nil, err
 		}
 	default:
