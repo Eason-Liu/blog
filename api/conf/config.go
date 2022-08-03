@@ -3,8 +3,11 @@ package conf
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	gormmysql "gorm.io/driver/mysql"
+	"gorm.io/gorm"
 	"sync"
 	"time"
 )
@@ -19,6 +22,14 @@ func NewDefaultConfig() *Config {
 type Config struct {
 	App   *app   `toml:"app" json:"app"`
 	Mysql *mysql `toml:"mysql" json:"mysql"`
+}
+
+func (c *Config) String() string {
+	jd, err := json.Marshal(c)
+	if err != nil {
+		panic(err)
+	}
+	return string(jd)
 }
 
 func newDefaultApp() *app {
@@ -67,6 +78,31 @@ type mysql struct {
 	MaxIdleTime int    `toml:"max_idle_time" json:"max_idle_time" env:"MYSQL_MAX_IDLE_TIME"`
 	lock        sync.Mutex
 	dbconn      *sql.DB
+	orm         *gorm.DB
+}
+
+func (m *mysql) Dsn() string {
+	return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&multiStatements=true",
+		m.Username,
+		m.Password,
+		m.Host,
+		m.Port,
+		m.Database,
+	)
+}
+
+func (m *mysql) GetORMDB() *gorm.DB {
+	m.lock.Lock()
+	defer m.lock.Unlock()
+
+	if m.orm == nil {
+		db, err := gorm.Open(gormmysql.Open(m.Dsn()))
+		if err != nil {
+			panic(err)
+		}
+		m.orm = db
+	}
+	return m.orm
 }
 
 //数据连接 单例模式
@@ -116,3 +152,17 @@ func (m *mysql) getDB() (*sql.DB, error) {
 	}
 	return db, nil
 }
+
+//func (m *mysql) getOrmDB() (*gorm.DB, error) {
+//	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&multiStatements=true",
+//		m.Username,
+//		m.Password,
+//		m.Host,
+//		m.Port,
+//		m.Database,
+//	)
+//	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+//	if err != nil {
+//		return nil, err
+//	}
+//}

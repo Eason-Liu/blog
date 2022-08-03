@@ -16,7 +16,11 @@ func Conf() *Config {
 
 func LoadConfigFromEnv() error {
 	config = NewDefaultConfig()
-	return env.Parse(config)
+
+	if err := env.Parse(config); err != nil {
+		return err
+	}
+	return nil
 }
 
 func LoadConfigFromToml(filepath string) error {

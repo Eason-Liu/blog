@@ -2,7 +2,7 @@ package impl
 
 import (
 	"blog/conf"
-	"database/sql"
+	"gorm.io/gorm"
 )
 
 func NewImpl() *Impl {
@@ -10,10 +10,18 @@ func NewImpl() *Impl {
 }
 
 type Impl struct {
-	db *sql.DB
+	db *gorm.DB
+}
+
+func (i *Impl) Name() string {
+	return "blog"
+}
+
+func (i *Impl) DB() *gorm.DB {
+	return i.db.Table(i.Name())
 }
 
 func (i *Impl) Init() error {
-	i.db = conf.Conf().Mysql.GetDB()
+	i.db = conf.Conf().Mysql.GetORMDB().Debug()
 	return nil
 }
