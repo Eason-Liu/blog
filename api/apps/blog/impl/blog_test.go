@@ -13,7 +13,7 @@ var blogService blog.Service
 
 func TestCreateBlog(t *testing.T) {
 	req := blog.NewCreateBlogRequest()
-	req.TitleName = "blog2"
+	req.TitleName = "blog5"
 	req.Content = "blog2 hello gohper,this is a golang."
 	ins, err := blogService.CreateBlog(context.Background(), req)
 	if err != nil {
@@ -49,6 +49,34 @@ func TestDeleteBlog(t *testing.T) {
 	req := blog.NewDeleteBlogRequest(2)
 	ins, err := blogService.DeleteBlog(context.Background(), req)
 	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(ins)
+}
+
+func TestUpdateBlog(t *testing.T) {
+	req := blog.NewPutUpdateBlogRequest(3)
+	req.Author = "admin"
+	ins, err := blogService.UpdateBlog(context.Background(), req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(ins)
+}
+
+func TestUpdatePatchBlog(t *testing.T) {
+	req := blog.NewPutUpdateBlogRequest(4)
+	req.TitleImg = "update image"
+	ins, err := blogService.UpdateBlog(context.Background(), req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(ins)
+}
+
+func TestValidate(t *testing.T) {
+	ins := blog.NewCreateBlog(blog.NewCreateBlogRequest())
+	if err := ins.CreateBlogRequest.Validate(); err != nil {
 		t.Fatal(err)
 	}
 	t.Log(ins)

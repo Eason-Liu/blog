@@ -52,15 +52,15 @@ func NewCreateBlogRequest() *CreateBlogRequest {
 }
 
 type CreateBlogRequest struct {
-	TitleImg  string `json:"title_img"`                     //文章图片
-	TitleName string `json:"title_name" valdate:"required"` //文章标题
-	SubTitle  string `json:"sub_title"`                     //文章副标题
-	Content   string `json:"content" valdate:"required"`    //文章内容
-	Author    string `json:"author"`                        //文章作者
+	TitleImg  string `json:"title_img"`                      //文章图片
+	TitleName string `json:"title_name" validate:"required"` //文章标题
+	SubTitle  string `json:"sub_title"`                      //文章副标题
+	Content   string `json:"content" validate:"required"`    //文章内容
+	Author    string `json:"author"`                         //文章作者
 }
 
 //校验对象
-func (req *CreateBlogRequest) Valdate() error {
+func (req *CreateBlogRequest) Validate() error {
 	return validate.Struct(req)
 }
 

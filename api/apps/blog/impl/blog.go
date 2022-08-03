@@ -4,12 +4,13 @@ import (
 	"blog/apps/blog"
 	"context"
 	"errors"
+	"github.com/imdario/mergo"
 	"github.com/infraboard/mcube/exception"
 )
 
 func (i *Impl) CreateBlog(ctx context.Context, req *blog.CreateBlogRequest) (*blog.Blog, error) {
 	//校验
-	if err := req.Valdate(); err != nil {
+	if err := req.Validate(); err != nil {
 		return nil, exception.NewBadRequest("validate create blog request error, %s", err)
 	}
 
@@ -77,7 +78,30 @@ func (i *Impl) DeleteBlog(ctx context.Context, req *blog.DeleteBlogRequest) (*bl
 }
 
 func (i *Impl) UpdateBlog(ctx context.Context, req *blog.UpdateBlogRequest) (*blog.Blog, error) {
-	return nil, errors.New("not implment")
+	ins, err := i.DescribeBlog(ctx, blog.NewDescribeBlogRequest(req.BlogId))
+	if err != nil {
+		return nil, err
+	}
+	switch req.UpdateMode {
+	case blog.UPDATE_MODE_PUT:
+		ins.CreateBlogRequest = req.CreateBlogRequest
+	case blog.UPDATE_MODE_PATCH:
+		if err := mergo.MapWithOverwrite(ins.CreateBlogRequest, req.CreateBlogRequest); err != nil {
+			return nil, err
+		}
+	default:
+		return nil, exception.NewBadRequest("update mode not support %s", req.UpdateMode)
+	}
+
+	if err := ins.CreateBlogRequest.Validate(); err != nil {
+		return nil, exception.NewBadRequest("validate request error, %s", err)
+	}
+
+	if err := i.DB().WithContext(ctx).Updates(ins).Error; err != nil {
+		return nil, err
+	}
+
+	return ins, nil
 }
 
 func (i *Impl) UpdateBlogStatus(ctx context.Context, req *blog.UpdateBlogStatusRequest) (*blog.Blog, error) {
