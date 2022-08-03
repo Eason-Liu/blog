@@ -26,7 +26,7 @@ type Blog struct {
 	Status             Status `json:"status"` //文章状态  草稿/发布
 }
 
-func (b *Blog) Strings() string {
+func (b *Blog) String() string {
 	dj, _ := json.Marshal(b)
 	return string(dj)
 }

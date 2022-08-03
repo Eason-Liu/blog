@@ -26,6 +26,17 @@ func TestCreateBlog(t *testing.T) {
 	t.Log(ins)
 }
 
+func TestQueryBlog(t *testing.T) {
+	req := blog.NewQueryBlogRequest()
+	req.Keywords = "blog"
+	ins, err := blogService.QueryBlog(context.Background(), req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(ins)
+
+}
+
 func init() {
 	if err := conf.LoadConfigFromToml("/Users/easonliu/Downloads/blog/api/etc/config.toml"); err != nil {
 		panic(err)
