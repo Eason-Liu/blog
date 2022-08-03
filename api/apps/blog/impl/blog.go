@@ -64,11 +64,19 @@ func (i *Impl) DescribeBlog(ctx context.Context, req *blog.DescribeBlogRequest) 
 	return ins, nil
 }
 
-func (i *Impl) UpdateBlog(ctx context.Context, req *blog.UpdateBlogRequest) (*blog.Blog, error) {
-	return nil, errors.New("not implment")
+func (i *Impl) DeleteBlog(ctx context.Context, req *blog.DeleteBlogRequest) (*blog.Blog, error) {
+	ins, err := i.DescribeBlog(ctx, blog.NewDescribeBlogRequest(req.Id))
+	if err != nil {
+		return nil, err
+	}
+
+	if err := i.DB().Delete(ins).Error; err != nil {
+		return nil, err
+	}
+	return ins, nil
 }
 
-func (i *Impl) DeleteBlog(ctx context.Context, req *blog.DeleteBlogRequest) (*blog.Blog, error) {
+func (i *Impl) UpdateBlog(ctx context.Context, req *blog.UpdateBlogRequest) (*blog.Blog, error) {
 	return nil, errors.New("not implment")
 }
 

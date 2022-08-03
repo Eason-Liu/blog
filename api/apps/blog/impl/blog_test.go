@@ -37,12 +37,20 @@ func TestQueryBlog(t *testing.T) {
 }
 
 func TestDescribeBlog(t *testing.T) {
-	req := blog.NewDescribeBlogRequest(1)
+	req := blog.NewDescribeBlogRequest(2)
 	ins, err := blogService.DescribeBlog(context.Background(), req)
 	if err != nil {
 		t.Fatal(err)
 	}
+	t.Log(ins)
+}
 
+func TestDeleteBlog(t *testing.T) {
+	req := blog.NewDeleteBlogRequest(2)
+	ins, err := blogService.DeleteBlog(context.Background(), req)
+	if err != nil {
+		t.Fatal(err)
+	}
 	t.Log(ins)
 }
 
