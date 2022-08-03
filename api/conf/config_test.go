@@ -12,3 +12,11 @@ func TestLoadConfigFromToml(t *testing.T) {
 	}
 	t.Log(conf.Conf())
 }
+
+func TestLoadConfigFromEnv(t *testing.T) {
+	err := conf.LoadConfigFromEnv()
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(conf.Conf())
+}
